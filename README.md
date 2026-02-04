@@ -4,13 +4,13 @@ An AI-powered chatbot for the Top Avvocati legal services platform, built entire
 
 ## Demo
 
-**Live chatbot screenshot:**
+<video controls width="100%" src="Video-Chat-in-azione.mp4" poster="Chat-1.png"></video>
+
+Full recorded session: the chatbot handles a real conversation from the initial greeting through service exploration to a consultation booking CTA.
+
+**Screenshot:**
 
 ![Chatbot in action](Chat-1.png)
-
-**Video demo:**
-
-The file `Video-Chat-in-azione.mp4` contains a full recorded session showing the chatbot handling a real conversation — from the initial greeting through service exploration to a consultation booking CTA.
 
 ## Workflow Architecture
 
