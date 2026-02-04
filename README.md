@@ -4,11 +4,9 @@ An AI-powered chatbot for the Top Avvocati legal services platform, built entire
 
 ## Demo
 
-<video controls width="100%" src="Video-Chat-in-azione.mp4" poster="Chat-1.png"></video>
+https://github.com/Yassir00000/top-avvocati-rag-chatbot/releases/download/v1.0/Video-Chat-in-azione.mp4
 
 Full recorded session: the chatbot handles a real conversation from the initial greeting through service exploration to a consultation booking CTA.
-
-**Screenshot:**
 
 ![Chatbot in action](Chat-1.png)
 
