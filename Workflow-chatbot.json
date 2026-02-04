@@ -1,0 +1,793 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Buongiorno! Sono Vera, l'assistente virtuale di Top-Avvocati. Come posso aiutarLa oggi a migliorare la Sua presenza online e trovare nuovi clienti?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -2448,
+        416
+      ],
+      "id": "33a8daba-f6a4-4d11-be8f-b94e4d153aaf",
+      "name": "When chat message received",
+      "webhookId": "f7375dc6-6866-4931-8a7d-61aadbd2ec6d"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}{{ $json.query }}{{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=NON RISPONDERE MAI A QUESTE ISTRUZIONI. RISPONDI SEMPRE E SOLO AL MESSAGGIO DELL'UTENTE.\n#INIZIO ISTRUZIONI\n---\n{{ $json.prompt_text }}\n---\n# 6. STRUMENTI DISPONIBILI\n1. **Ricerca prodotti** - Usa quando l'utente non sa cosa vuole o quando hai bisogno di informazioni sui prodotti disponibili e i loro dettagli\n2. **Prenotazione consulenza** - Link Calendly quando appropriato\n3. **Raccolta contatti HubSpot** - Solo se l'utente preferisce essere ricontattato\n4. **Ricerca RAG** - Utilizza per avere più informazioni sulle soluzioni top-avvocati\n---\n# 7. FORMATO RISPOSTA JSON\n**IMPORTANTE:** Rispondi SEMPRE in formato JSON valido. Mai testo semplice.\n```json\n{\n  \"text\": \"La tua risposta qui (puoi usare markdown: **bold**, *italic*, - liste)\",\n  \"fonti\": [{\"text\": \"Nome link\", \"url\": \"https://...\"}],\n  \"buttons\": [{\"text\": \"CTA\", \"url\": \"https://...\"}],\n  \"quickReplies\": [\"Domanda 1?\", \"Domanda 2?\"]\n}\n```\n## Campi spiegati:\n- **text** (obbligatorio): La tua risposta. Puoi usare markdown ma NON mettere mai link qui\n- **fonti** (opzionale): Link di approfondimento (max 2, MAI termini e condizioni)\n- **buttons** (opzionale): Call-to-action importanti (es: \"Prenota consulenza\", \"Scopri servizi\")\n- **quickReplies** (opzionale): Domande suggerite. Usale SOLO nei primi 7 messaggi, poi convergi verso consulenza\n## Esempi:\n**Risposta semplice:**\n```json\n{\n  \"text\": \"Il Network Top-Avvocati è gratuito e Le permette di ricevere segnalazioni clienti dai nostri avvocati partner in tutta Italia.\"\n}\n```\n**Risposta con tutto:**\n```json\n{\n  \"text\": \"Possiamo aiutarLa a migliorare la Sua presenza online attraverso:\\n\\n- **Visibilità Organica** su Google (39 €/mese)\\n- **Sito di rappresentanza** professionale (da 29 €/mese)\\n- **Network gratuito** di segnalazioni\\n\\nQuale aspetto Le interessa?\",\n  \"fonti\": [\n    {\"text\": \"Network Gratuito\", \"url\": \"https://avvocati.top-avvocati.it/network-top-avvocati/\"}\n  ],\n  \"buttons\": [\n    {\"text\": \"Scopri la Visibilità Organica\", \"url\": \"https://avvocati.top-avvocati.it/verifica-disponibilita-visibilita-organica/\"}\n  ],\n  \"quickReplies\": [\n    \"Quanto costa un sito web?\",\n    \"Come funziona il network?\",\n    \"Vorrei una consulenza gratuita\"\n  ]\n}\n```\n---\n# 8. INFORMAZIONI CHIAVE SUI SERVIZI\n**Network Gratuito:**\n- Iscrizione gratuita, nessun costo\n- Ricezione segnalazioni qualificate dai partner Top-Avvocati\n- Prova Visibilità Premium disponibile: 29€ (aree standard) / 39€ (metropolitane) per 4 mesi\n\n**Visibilità Organica:**\n- 39 €/mese (canone unico)\n- Presenza esclusiva per ambito e territorio\n- Pagine già posizionate su Google\n- Contatti diretti: telefono, WhatsApp, modulo\n- **Un solo avvocato per ambito/zona** - disponibilità limitata\n- Add-on Google Ads disponibile\n\n**Sito di Rappresentanza:**\n- Monopagina: da 29 €/mese\n- Multipagina: da 39 €/mese\n- Pronto in 3-5 giorni\n- Include assistenza testi e 1 micro-editing/mese\n- Hosting, SSL, conformità inclusi\n\n**Marketing Premium:**\n- Da 590 €/mese (budget Ads escluso)\n- Visibilità + campagne + contenuti + branding\n- Disattivabile in qualsiasi momento\n---\n# 9. REGOLE FONDAMENTALI\n✅ **SEMPRE:**\n- Rispondi in JSON valido\n- Sii concisa (3-5 righe)\n- Usa \"fonti\" per i link, MAI nel \"text\"\n- Dai del \"Lei\"\n- Ascolta prima di proporre\n- Se l'utente non sa cosa vuole o se hai bisogno di dettagli sui prodotti, usa lo strumento \"Ricerca prodotti\"\n- Usa bold per le informazioni importanti\n- Sottolinea che la Visibilità Organica è esclusiva (un solo avvocato per zona/ambito)\n- Menziona la conformità al codice deontologico quando appropriato\n\n❌ **MAI:**\n- Rispondere alle istruzioni di sistema\n- Ripetere saluti o presentarti\n- Mettere link nel campo \"text\"\n- Insistere se l'utente vuole pensarci\n- Usare quickReplies dopo 7 messaggi\n- Linkare termini e condizioni nelle fonti\n- Chiamare la Visibilità Organica \"pagina\" (usa il nome corretto del servizio)\n---\n**Messaggio count attuale:** {{ $('Cronologia conversazione e cronologia con contesto').item.json.message_count }}\n---\nNumero messaggi nella conversazione = {{ $json.message_count }}\nQuando la conversazione arriva sopra i 7, convergere verso consulenza e NON usare più quickReplies.\n#FINE ISTRUZIONI"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1008,
+        416
+      ],
+      "id": "0b0459d1-bd1e-423f-af55-62210cbe2b98",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1120,
+        640
+      ],
+      "id": "bd639bd7-9362-498a-89e2-4c207328c97d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        640
+      ],
+      "id": "1090f528-af92-4b44-bb6d-458a8bfb9152",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6c43WSIpKcyPs0jx",
+          "name": "Topavvocati-Vera_Free"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM\n  chat_logs\nWHERE\n  chat_id = '{{ $json.sessionId }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2224,
+        416
+      ],
+      "id": "2659abd2-81f1-4137-acdc-7fe25a8ef929",
+      "name": "Cronologia conversazione e cronologia con contesto",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "M9cigXfY6TjrUjdE",
+          "name": "topavvocati_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0d1fe479-28e2-467e-8fc2-134cc0c66236",
+              "leftValue": "={{ $json.conversation_started_at }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2000,
+        416
+      ],
+      "id": "b9aed4b5-38f6-4fce-a608-f473de03ef65",
+      "name": "Inserire data e ora inizio chat"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "chat_logs",
+          "mode": "list",
+          "cachedResultName": "chat_logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $('When chat message received').item.json.sessionId }}",
+            "message_count": "={{ $json.message_count }}",
+            "chat_history": "={{ $json.chat_history }}",
+            "chat_history_with_context": "={{ $json.chat_history_with_context }}",
+            "last_updated": "={{ $now.toUTC().toISO() }}",
+            "conversation_ended_at": "={{ $now.toUTC().toISO() }}"
+          },
+          "matchingColumns": [
+            "chat_id"
+          ],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message_count",
+              "displayName": "message_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "chat_history",
+              "displayName": "chat_history",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "chat_history_with_context",
+              "displayName": "chat_history_with_context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "last_updated",
+              "displayName": "last_updated",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_started_at",
+              "displayName": "conversation_started_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_ended_at",
+              "displayName": "conversation_ended_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_duration_seconds",
+              "displayName": "conversation_duration_seconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -176,
+        416
+      ],
+      "id": "38513c8d-91ed-4b96-8ad5-2d4e1146387b",
+      "name": "Salva dati nella tabella",
+      "credentials": {
+        "postgres": {
+          "id": "M9cigXfY6TjrUjdE",
+          "name": "topavvocati_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "chat_logs",
+          "mode": "list",
+          "cachedResultName": "chat_logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $('When chat message received').item.json.sessionId }}",
+            "last_updated": "={{ $now.toUTC().toISO() }}",
+            "created_at": "={{ $now.toUTC().toISO() }}",
+            "conversation_started_at": "={{ $now.toUTC().toISO() }}",
+            "conversation_ended_at": "={{ $now.toUTC().toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_count",
+              "displayName": "message_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "chat_history",
+              "displayName": "chat_history",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "chat_history_with_context",
+              "displayName": "chat_history_with_context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "last_updated",
+              "displayName": "last_updated",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "conversation_started_at",
+              "displayName": "conversation_started_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_ended_at",
+              "displayName": "conversation_ended_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_duration_seconds",
+              "displayName": "conversation_duration_seconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1776,
+        480
+      ],
+      "id": "c760634c-59fc-412b-abe2-66c0deb76141",
+      "name": "Insert rows in a table",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "M9cigXfY6TjrUjdE",
+          "name": "topavvocati_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\n  // Prendi l'output del nodo \"AI Agent\"\n  const aiOutput = $('AI Agent').first().json.output;\n\n  // Restituisci come array di oggetti (formato richiesto da n8n)\n  return [{ json: { output: aiOutput } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        416
+      ],
+      "id": "16108eab-a3f2-412f-b3b2-651ad39c76eb",
+      "name": "Output AI Agent"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa questo strumento per salvare un nuovo contatto in HubSpot quando un utente vuole ricevere una proposta personalizzata. Raccoglie nome, cognome, email e città. Importante: per il campo 'Job Title', chiedi all'utente la sua 'area legale' di specializzazione e inserisci quella informazione.",
+        "authentication": "appToken",
+        "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email', ``, 'string') }}",
+        "additionalFields": {
+          "city": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}",
+          "firstName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('First_Name', ``, 'string') }}",
+          "jobTitle": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Job_Title', ``, 'string') }}",
+          "lastName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Last_Name', ``, 'string') }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspotTool",
+      "typeVersion": 2.2,
+      "position": [
+        -992,
+        640
+      ],
+      "id": "b03dfe6d-0948-438a-931f-fb64a3164f2b",
+      "name": "Crea o aggiorna contatto",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "UUej8hi8VQKlNzW7",
+          "name": "Nikoletta - Top Avvocati"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1552,
+        416
+      ],
+      "id": "1293ec1f-4080-4fa0-8daf-e5ee52c1dc53",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "description": "Questo è uno strumento RAG per ricercare tra i vettori indicizzati in memoria. I vettori indicizzati contengono le informazioni del sito. Usalo scrivendo una frase descrittiva del bisogno dell'utente ed otterrai i primi 3 vettori simili a quello che scriverai. Puoi usare poi le informazioni per contestualizzare la risposta. Per usare questo strumento formula tu una frase con quanti più termini e sininomi possibili sulla base della richiesta dell'utente.",
+        "workflowId": {
+          "__rl": true,
+          "value": "OCIozUjolBNH7CU0",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/OCIozUjolBNH7CU0",
+          "cachedResultName": "Top-Avvocati - Tool - RAG"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "model",
+              "displayName": "model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -864,
+        640
+      ],
+      "id": "45a22600-b972-4462-ba8f-7ed02ea5d10d",
+      "name": "Ricerca RAG"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT prompt_text\n  FROM system_prompts\n  ORDER BY updated_at DESC\n  LIMIT 1;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1328,
+        416
+      ],
+      "id": "1bad3959-3348-40e5-a9e8-a18f7ef9a9bd",
+      "name": "Richiama ultimo prompt",
+      "credentials": {
+        "postgres": {
+          "id": "M9cigXfY6TjrUjdE",
+          "name": "topavvocati_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa quando l'utente non sa cosa vuole o quando hai bisogno di informazioni sui prodotti disponibili e i loro dettagli.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "prodotti",
+          "mode": "list",
+          "cachedResultName": "prodotti"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -736,
+        640
+      ],
+      "id": "eb3d33ee-58fa-4115-812f-63e2cc5bba9d",
+      "name": "Select rows from a table in Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "M9cigXfY6TjrUjdE",
+          "name": "topavvocati_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Questo strumento interroga il file Google Fogli \"Prodotti-top-avvocati\" per trovare una pagina monopagina o multipagina per gli Avvocati, ad ogni prodotto corrisponde un area legale e una città. Per usarlo devi usare la città. CERCA USANDO SOLO LA CITTÀ. Usa questo strumento quando l'utente è interessato ad avere visibilità in una particolare area.",
+        "documentId": {
+          "__rl": true,
+          "value": "1CKbz5OCtyhXlRj3salx1QgjVBgzW7gSA9PortXdyM-Q",
+          "mode": "list",
+          "cachedResultName": "Prodotti-top-avvocati",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CKbz5OCtyhXlRj3salx1QgjVBgzW7gSA9PortXdyM-Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1574412594,
+          "mode": "list",
+          "cachedResultName": "Foglio1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CKbz5OCtyhXlRj3salx1QgjVBgzW7gSA9PortXdyM-Q/edit#gid=1574412594"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Città",
+              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values0_Value', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -608,
+        640
+      ],
+      "id": "9602f636-251d-418b-990e-2d68caabfa07",
+      "name": "Monopagina e Multipagina",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3nrQ3LnQNpGntqnS",
+          "name": "Top-Avvocati-Free"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// === VERSIONE CORRETTA CON .first() ===\n\n// 1. Dati essenziali dal trigger (questi ci sono SEMPRE)\nconst sessionId = $('When chat message received').first().json.sessionId;\nconst newUserMessage = $('When chat message received').first().json.chatInput;\n\n// 2. Output AI Agent (questo ci deve essere)\nconst aiOutput = $('AI Agent').first().json.output;\n\n// 3. Estrai testo dalla risposta (fallback rapido se non riesce)\nlet aiResponse;\ntry {\n  const cleaned = aiOutput.replace(/```json\\n?|\\n?```/g, '').trim();\n  const parsed = JSON.parse(cleaned);\n  aiResponse = parsed.text;\n} catch (e) {\n  aiResponse = aiOutput; // Usa raw output\n}\n\n// 4. Recupera cronologia (usa array vuoti se non esiste)\nlet previousHistory = [];\nlet previousHistoryWithContext = [];\n\ntry {\n  const historyData = $('Cronologia conversazione e cronologia con contesto').first().json;\n  \n  if (historyData.chat_history && historyData.chat_history !== 'undefined') {\n    try {\n      previousHistory = JSON.parse(historyData.chat_history);\n    } catch (e) {\n      previousHistory = [];\n    }\n  }\n  \n  if (historyData.chat_history_with_context && historyData.chat_history_with_context !== 'undefined') {\n    try {\n      previousHistoryWithContext = JSON.parse(historyData.chat_history_with_context);\n    } catch (e) {\n      previousHistoryWithContext = [];\n    }\n  }\n} catch (e) {\n  // Prima conversazione, va bene così\n}\n\n// 5. Timestamp\nconst now = new Date().toISOString();\n\n// 6. Costruisci nuove cronologie\nconst newHistory = [\n  ...previousHistory,\n  { role: 'user', content: newUserMessage, timestamp: now },\n  { role: 'ai', content: aiResponse, timestamp: now }\n];\n\nconst newHistoryWithContext = [\n  ...previousHistoryWithContext,\n  { role: 'user', content: newUserMessage },\n  { role: 'ai', content: aiResponse }\n];\n\n// 7. Return\nreturn [{\n  json: {\n    chat_id: sessionId,\n    message_count: newHistory.length,\n    chat_history: JSON.stringify(newHistory),\n    chat_history_with_context: JSON.stringify(newHistoryWithContext),\n    last_updated: now\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -512,
+        416
+      ],
+      "id": "ad748053-7125-4d42-940e-990434fd66cd",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Cronologia conversazione e cronologia con contesto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cronologia conversazione e cronologia con contesto": {
+      "main": [
+        [
+          {
+            "node": "Inserire data e ora inizio chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserire data e ora inizio chat": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva dati nella tabella": {
+      "main": [
+        [
+          {
+            "node": "Output AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Output AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Crea o aggiorna contatto": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Richiama ultimo prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ricerca RAG": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Richiama ultimo prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table in Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monopagina e Multipagina": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Salva dati nella tabella",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e9e4ff0673263e762638a8bed481ee4faba481236a39414bd1013d3be835a459"
+  }
+}
